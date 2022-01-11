@@ -56,6 +56,7 @@ function App() {
           (index) => square[index] === null
         )[0];
         putComputerAt(winIndex);
+        setToggleturn(!toggleTurn);
         return;
       }
 
@@ -65,24 +66,26 @@ function App() {
           (index) => square[index] === null
         )[0];
         putComputerAt(blockIndex);
+        setToggleturn(!toggleTurn);
         return;
       }
 
-      const linesToContinue = linesThatare("o", null, null);
-      if (linesToContinue.length > 0) {
-        putComputerAt(
-          linesToContinue[0].filter((index) => square[index] === null)[0]
-        );
-        return;
-      }
-
-      let x = Math.floor(Math.random() * emptyIndexes.length);
-      let randomIndex = emptyIndexes[x];
-      while (randomIndex === null && square.includes(null)) {
+      // const linesToContinue = linesThatare("o", null, null);
+      // if (linesToContinue.length > 0) {
+      //   putComputerAt(
+      //     linesToContinue[0].filter((index) => square[index] === null)[0]
+      //   );
+      //   return;
+      // }
+      else {
         let x = Math.floor(Math.random() * emptyIndexes.length);
-        randomIndex = emptyIndexes[x];
+        let randomIndex = emptyIndexes[x];
+        while (randomIndex === null && square.includes(null)) {
+          let x = Math.floor(Math.random() * emptyIndexes.length);
+          randomIndex = emptyIndexes[x];
+        }
+        putComputerAt(randomIndex);
       }
-      putComputerAt(randomIndex);
       setToggleturn(!toggleTurn);
     }
   }, [toggleTurn]);
@@ -110,12 +113,8 @@ function App() {
           );
         })}
       </Board>
-      {!!winner && winner === "x" && (
-        <div className='result green'>You WON!</div>
-      )}
-      {!!winner && winner === "o" && (
-        <div className='result red'>You LOST!</div>
-      )}
+      {winner === "x" && <div className='result green'>You WON!</div>}
+      {winner === "o" && <div className='result red'>You LOST!</div>}
     </div>
   );
 }
